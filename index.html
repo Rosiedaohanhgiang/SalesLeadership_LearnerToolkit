@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Learner Toolkit - Lãnh Đạo Ưu Tú</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .view {
+            display: none;
+        }
+        .view.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .bottom-nav-btn.active svg {
+            color: #4f46e5; /* indigo-600 */
+        }
+         .bottom-nav-btn.active p {
+            color: #4f46e5; /* indigo-600 */
+        }
+        .matrix-quadrant {
+            transition: all 0.2s ease-in-out;
+        }
+        .matrix-quadrant.selected {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 4px #6366f1; /* indigo-500 */
+            z-index: 10;
+        }
+        textarea { resize: none; }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div id="app-container" class="max-w-md mx-auto bg-white h-screen flex flex-col shadow-2xl">
+        <!-- Header -->
+        <header class="bg-white p-4 border-b border-gray-200 shadow-sm sticky top-0">
+            <h1 id="header-title" class="text-xl font-bold text-center text-gray-800">Check-in</h1>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow overflow-y-auto p-6">
+            <!-- View 1: Check-in -->
+            <div id="view-check-in" class="view active">
+                <h2 class="text-2xl font-bold mb-4">Kỳ vọng của bạn</h2>
+                <p class="text-gray-600 mb-4">Bạn mang đến đây hôm nay với kỳ vọng lớn nhất là gì? Điều gì sẽ khiến buổi học này thành công rực rỡ đối với bạn?</p>
+                <textarea id="checkin-textarea" class="w-full h-40 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Viết kỳ vọng của bạn ở đây..."></textarea>
+                <button id="save-checkin" class="mt-4 w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition-all">Lưu Kỳ Vọng</button>
+                 <p id="checkin-feedback" class="text-center text-green-600 mt-2 opacity-0 transition-opacity">Đã lưu!</p>
+            </div>
+
+            <!-- View 2: Ma tran Lanh dao -->
+            <div id="view-matrix" class="view">
+                <h2 class="text-2xl font-bold mb-2">Ma Trận Lãnh Đạo</h2>
+                <p class="text-gray-600 mb-6">Trong tuần vừa qua, bạn cảm thấy mình dành nhiều thời gian và năng lượng nhất ở góc phần tư nào? Hãy chọn một.</p>
+                <div class="grid grid-cols-2 grid-rows-2 gap-4 aspect-square">
+                     <div data-quadrant="cheerleader" class="matrix-quadrant cursor-pointer rounded-lg bg-blue-50 p-4 flex flex-col justify-center items-center text-center border-2 border-blue-200">
+                        <h3 class="font-bold text-blue-800">Người Cổ vũ</h3>
+                    </div>
+                    <div data-quadrant="leader" class="matrix-quadrant cursor-pointer rounded-lg bg-green-50 p-4 flex flex-col justify-center items-center text-center border-2 border-green-200">
+                        <h3 class="font-bold text-green-800">Nhà Lãnh đạo Ưu tú</h3>
+                    </div>
+                    <div data-quadrant="supervisor" class="matrix-quadrant cursor-pointer rounded-lg bg-red-50 p-4 flex flex-col justify-center items-center text-center border-2 border-red-200">
+                         <h3 class="font-bold text-red-800">Người Giám sát</h3>
+                    </div>
+                    <div data-quadrant="architect" class="matrix-quadrant cursor-pointer rounded-lg bg-yellow-50 p-4 flex flex-col justify-center items-center text-center border-2 border-yellow-200">
+                        <h3 class="font-bold text-yellow-800">Người Kiến tạo</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View 3: So tay GROW -->
+            <div id="view-grow" class="view">
+                <h2 class="text-2xl font-bold mb-4">Sổ Tay G.R.O.W</h2>
+                <p class="text-gray-600 mb-4">Ghi lại những câu hỏi huấn luyện quyền năng nhất mà bạn đã nghe hoặc đã sử dụng trong phiên thực hành.</p>
+                <textarea id="grow-textarea" class="w-full h-64 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="VD: 'Nếu có một cỗ máy thời gian, bạn sẽ làm gì khác đi?'..."></textarea>
+                 <button id="save-grow" class="mt-4 w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition-all">Lưu Ghi Chú</button>
+                 <p id="grow-feedback" class="text-center text-green-600 mt-2 opacity-0 transition-opacity">Đã lưu!</p>
+            </div>
+
+             <!-- View 4: Thu vien Nghi thuc -->
+            <div id="view-rituals" class="view">
+                <h2 class="text-2xl font-bold mb-4">Thư Viện Nghi Thức</h2>
+                <p class="text-gray-600 mb-6">Tham khảo và bỏ phiếu cho ý tưởng nghi thức bạn tâm đắc nhất từ các nhóm khác.</p>
+                <div id="ritual-list" class="space-y-4">
+                    <!-- Rituals will be injected by JS -->
+                </div>
+            </div>
+
+            <!-- View 5: Trinh tao Cam ket -->
+            <div id="view-commitment" class="view">
+                 <h2 class="text-2xl font-bold mb-4">Trình Tạo Cam Kết</h2>
+                <p class="text-gray-600 mb-4">Viết một cam kết hành động cụ thể mà bạn sẽ thực hiện trong 30 ngày tới để trở thành nhà lãnh đạo mà bạn mong muốn.</p>
+                <textarea id="commitment-textarea" class="w-full h-40 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Tôi cam kết sẽ..."></textarea>
+                <button id="save-commitment" class="mt-4 w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 transition-all">Lưu Cam Kết & Đặt Lịch Nhắc Nhở</button>
+                 <p id="commitment-feedback" class="text-center text-green-600 mt-2 opacity-0 transition-opacity">Đã lưu! Hãy kiểm tra lịch của bạn sau 30 ngày.</p>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bg-white border-t border-gray-200 grid grid-cols-5 sticky bottom-0">
+            <button data-view="check-in" class="bottom-nav-btn p-3 text-center text-gray-500 active">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                <p class="text-xs mt-1">Check-in</p>
+            </button>
+             <button data-view="matrix" class="bottom-nav-btn p-3 text-center text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                <p class="text-xs mt-1">Ma trận</p>
+            </button>
+             <button data-view="grow" class="bottom-nav-btn p-3 text-center text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v11.494m-9-5.747h18" /></svg>
+                <p class="text-xs mt-1">G.R.O.W</p>
+            </button>
+             <button data-view="rituals" class="bottom-nav-btn p-3 text-center text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                <p class="text-xs mt-1">Nghi thức</p>
+            </button>
+            <button data-view="commitment" class="bottom-nav-btn p-3 text-center text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
+                <p class="text-xs mt-1">Cam kết</p>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const views = document.querySelectorAll('.view');
+            const navButtons = document.querySelectorAll('.bottom-nav-btn');
+            const headerTitle = document.getElementById('header-title');
+            
+            // --- Sample Data for Rituals ---
+            const rituals = [
+                { id: 1, title: 'Họp Đứng Đầu Tuần (15 phút)', description: 'Mỗi người chia sẻ: 1) Ưu tiên lớn nhất tuần này là gì? 2) Cần sự hỗ trợ từ ai?' },
+                { id: 2, title: 'Ăn Mừng Chiến Thắng (Thứ 6)', description: 'Mỗi người chia sẻ một "chiến thắng" trong tuần, dù lớn hay nhỏ. Team cùng vỗ tay công nhận.' },
+                { id: 3, title: 'Review Pipeline Kiểu "Luật Sư"', description: 'Mỗi người trình bày 1 deal quan trọng, cả team đóng vai "luật sư" để tìm ra lỗ hổng và rủi ro tiềm ẩn.' },
+            ];
+
+            const renderRituals = () => {
+                const ritualList = document.getElementById('ritual-list');
+                ritualList.innerHTML = rituals.map(r => `
+                    <div class="p-4 border border-gray-200 rounded-lg">
+                        <h3 class="font-bold text-lg">${r.title}</h3>
+                        <p class="text-gray-600 mt-1">${r.description}</p>
+                        <button data-ritual-id="${r.id}" class="ritual-vote-btn mt-3 text-sm font-bold text-indigo-600">Bỏ phiếu cho ý tưởng này 👍</button>
+                    </div>
+                `).join('');
+            };
+
+            // --- Navigation Logic ---
+            const switchView = (viewId) => {
+                views.forEach(view => {
+                    view.classList.toggle('active', view.id === `view-${viewId}`);
+                });
+                navButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.view === viewId);
+                });
+                const activeBtn = document.querySelector(`.bottom-nav-btn[data-view="${viewId}"]`);
+                headerTitle.textContent = activeBtn.querySelector('p').textContent;
+            };
+
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', () => switchView(btn.dataset.view));
+            });
+
+            // --- Tool Functionality Logic ---
+            const setupToolkit = () => {
+                // Check-in
+                const checkinTextarea = document.getElementById('checkin-textarea');
+                const saveCheckinBtn = document.getElementById('save-checkin');
+                const checkinFeedback = document.getElementById('checkin-feedback');
+                checkinTextarea.value = localStorage.getItem('learner_checkin') || '';
+                saveCheckinBtn.addEventListener('click', () => {
+                    localStorage.setItem('learner_checkin', checkinTextarea.value);
+                    checkinFeedback.classList.add('opacity-100');
+                    setTimeout(() => checkinFeedback.classList.remove('opacity-100'), 2000);
+                });
+
+                // Matrix
+                const quadrants = document.querySelectorAll('.matrix-quadrant');
+                const selectedQuadrant = localStorage.getItem('learner_matrix_selection');
+                if (selectedQuadrant) {
+                    document.querySelector(`[data-quadrant="${selectedQuadrant}"]`)?.classList.add('selected');
+                }
+                quadrants.forEach(q => {
+                    q.addEventListener('click', () => {
+                        quadrants.forEach(innerQ => innerQ.classList.remove('selected'));
+                        q.classList.add('selected');
+                        localStorage.setItem('learner_matrix_selection', q.dataset.quadrant);
+                    });
+                });
+
+                // G.R.O.W Notebook
+                const growTextarea = document.getElementById('grow-textarea');
+                const saveGrowBtn = document.getElementById('save-grow');
+                const growFeedback = document.getElementById('grow-feedback');
+                growTextarea.value = localStorage.getItem('learner_grow_notes') || '';
+                saveGrowBtn.addEventListener('click', () => {
+                    localStorage.setItem('learner_grow_notes', growTextarea.value);
+                    growFeedback.classList.add('opacity-100');
+                    setTimeout(() => growFeedback.classList.remove('opacity-100'), 2000);
+                });
+
+                // Rituals
+                renderRituals();
+                 document.getElementById('ritual-list').addEventListener('click', (e) => {
+                    if (e.target.classList.contains('ritual-vote-btn')) {
+                        alert(`Cảm ơn bạn đã bỏ phiếu cho nghi thức #${e.target.dataset.ritualId}!`);
+                        // In a real app, this would send data to a server.
+                    }
+                });
+
+                // Commitment
+                const commitmentTextarea = document.getElementById('commitment-textarea');
+                const saveCommitmentBtn = document.getElementById('save-commitment');
+                const commitmentFeedback = document.getElementById('commitment-feedback');
+                commitmentTextarea.value = localStorage.getItem('learner_commitment') || '';
+                saveCommitmentBtn.addEventListener('click', () => {
+                    localStorage.setItem('learner_commitment', commitmentTextarea.value);
+                    commitmentFeedback.classList.add('opacity-100');
+                    setTimeout(() => commitmentFeedback.classList.remove('opacity-100'), 3000);
+                });
+            };
+
+            // --- Initial Load ---
+            setupToolkit();
+        });
+    </script>
+</body>
+</html>
